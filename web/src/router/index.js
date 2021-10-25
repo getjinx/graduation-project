@@ -1,22 +1,79 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Home from '../views/home.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    name: 'Home',
+    name: 'lome',
     component: Home
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: '/login',
+    name: 'login',
+    component: () => import('../views/login.vue')
+  },
+  {
+    path: '/index',
+    name: 'index',
+    component: () => import('../views/index.vue'),
+    children: [{
+      path: 'checkemr',
+      name: 'checkEmr',
+      component: () => import('../views/checkEmr.vue')
+    },{
+      path: 'uploademr',
+      name: 'uploadEmr',
+      component: () => import('../views/uploadEmr.vue')
+    }]
+  },
+  {
+    path: '/manage',
+    name: '/manage',
+    component: () => import('../views/manage.vue'),
+    children: [{
+      path: 'manageNode',
+      name: 'manageNode',
+      component: () => import('../views/manageNode.vue')
+    },{
+      path: 'addNode',
+      name: 'addNode',
+      component: () => import('../views/addNode.vue')
+    }]
+  },
+  {
+    path: '/patientLogin',
+    name: 'patientLogin',
+    component: () => import('../views/patientLogin.vue')
+  },
+  {
+    path: '/patientIndex',
+    name: 'patientIndex',
+    component: () => import('../views/patientIndex.vue'),
+    children: [{
+      path: 'patientCheckInfo',
+      name: 'patientCheckInfo',
+      component: () => import('../views/patientCheckInfo.vue')
+    },{
+      path: 'patientCheckEmr',
+      name: 'patientCheckEmr',
+      component: () => import('../views/patientCheckEmr.vue')
+    },{
+      path: 'patientCheckKey',
+      name: 'patientCheckKey',
+      component: () => import('../views/patientCheckKey.vue')
+    }]
+  },{
+    path: '/scan',
+    name: 'scan',
+    component: () => import('../views/scan.vue')
+  }
+  ,{
+    path: '/patientViewEmr',
+    name: 'patientViewEmr',
+    component: () => import('../views/patientViewEmr.vue')
   }
 ]
 
