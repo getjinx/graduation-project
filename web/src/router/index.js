@@ -27,6 +27,10 @@ const routes = [
       path: 'uploademr',
       name: 'uploadEmr',
       component: () => import('../views/uploadEmr.vue')
+    },{
+      path: 'getEmr',
+      name: 'getEmr',
+      component: () => import('../views/getEmr.vue')
     }]
   },
   {
@@ -41,6 +45,14 @@ const routes = [
       path: 'addNode',
       name: 'addNode',
       component: () => import('../views/addNode.vue')
+    },{
+      path: 'checkBlock',
+      name: 'checkBlock',
+      component: () => import('../views/checkBlock.vue')
+    },{
+      path: 'checkBlockInfo',
+      name: 'checkBlockInfo',
+      component: () => import('../views/checkBlockInfo.vue')
     }]
   },
   {
@@ -61,9 +73,9 @@ const routes = [
       name: 'patientCheckEmr',
       component: () => import('../views/patientCheckEmr.vue')
     },{
-      path: 'patientCheckKey',
-      name: 'patientCheckKey',
-      component: () => import('../views/patientCheckKey.vue')
+      path: 'patientCheckMine',
+      name: 'patientCheckMine',
+      component: () => import('../views/patientCheckMine.vue')
     }]
   },{
     path: '/scan',

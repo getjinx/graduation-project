@@ -38,5 +38,5 @@ module.exports = (sequelize) => {
     //     }, 1000);
     // }
     // timeOut();
-    methods.createBlock(sequelize);
+    // methods.createBlock(sequelize);
 }

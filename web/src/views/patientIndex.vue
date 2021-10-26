@@ -4,9 +4,6 @@
       <div class="scan" @click="scan">
         <i class="el-icon-monitor"></i>
       </div>
-      <div class="setting">
-        <i class="el-icon-setting"></i>
-      </div>
     </header>
     <div class="content" :style="content">
       <router-view></router-view>
@@ -21,8 +18,8 @@
         <div class="icon-name">病历查看</div>
       </div>
       <div class="item" @click="changePage(2)">
-        <div class="icon"><i class="el-icon-key"></i></div>
-        <div class="icon-name">密钥管理</div>
+        <div class="icon"><i class="el-icon-user"></i></div>
+        <div class="icon-name">我的主页</div>
       </div>
     </footer>
     <!-- <div :style="info">
@@ -48,7 +45,7 @@
     justify-content: space-around;
 
     &>div {
-      width: 40%;
+      width: 90%;
       font-size: 30px;
       color: white;
       margin: auto;
@@ -101,7 +98,7 @@
 export default {
   data() {
     return {
-      page: ["/patientIndex/patientCheckInfo","/patientIndex/patientCheckEmr","/patientIndex/patientCheckKey"],
+      page: ["/patientIndex/patientCheckInfo","/patientIndex/patientCheckEmr","/patientIndex/patientCheckMine"],
       content: {
         height: "0px"
       },

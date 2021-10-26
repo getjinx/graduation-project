@@ -19,15 +19,20 @@
       </el-header>
       <el-container>
         <el-aside width="200px" style="background-color: rgb(238, 241, 246); height: 100%">
-          <el-menu :router="true" :default-openeds="['1']">
+          <el-menu :router="true" :default-openeds="['1','2']">
             <el-submenu index="1">
-              <template slot="title"><i class="el-icon-document"></i>联盟节点管理</template>
+              <template slot="title"><i class="el-icon-setting"></i>联盟节点管理</template>
                 <el-menu-item index="/manage/manageNode">编辑节点</el-menu-item>
                 <el-menu-item index="/manage/addNode">新增节点</el-menu-item>
             </el-submenu>
+            <el-submenu index="2">
+              <template slot="title"><i class="el-icon-document"></i>状态查看</template>
+                <el-menu-item index="/manage/checkBlock">状态总览</el-menu-item>
+                <el-menu-item index="/manage/checkBlockInfo">所有区块信息</el-menu-item>
+            </el-submenu>
           </el-menu>
         </el-aside>
-        <el-container style="height: 90vh;">
+        <el-container style="height: 90vh;overflow-x: hidden;">
           <router-view></router-view>
         </el-container>
       </el-container>

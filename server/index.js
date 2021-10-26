@@ -16,5 +16,6 @@ const sequelize = new Sequelize("graduation_project", "root", "123456", {
 }); 
 require("./alliance_chain/environmental.js")(sequelize);
 require("./router/index")(app, sequelize); 
+// require("./router/websocket.js");
 console.log("http://localhost:3000");
 app.listen("3000");

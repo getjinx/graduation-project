@@ -70,38 +70,28 @@ export default {
   data() {
     return {
         tableData: [{
-          name: 'A病历',
+          id: '1',
+          name: '李华-绵阳市中心医院病历',
           date: '2021-10-12',
         }, {
-          name: 'C病历',
-          date: '2021-10-21',
+          id: '2',
+          name: '李华-绵阳市人民医院病历',
+          date: '2021-10-9',
         },{
-          name: 'D病历',
-          date: '2021-10-18',
+          id: '3',
+          name: '李华-绵阳市中心医院病历',
+          date: '2021-06-21',
         },{
-          name: 'G病历',
-          date: '2021-10-04',
+          id: '4',
+          name: '李华-绵阳市人民医院病历',
+          date: '2020-01-16',
         },{
-          name: 'B病历',
-          date: '2021-10-06',
-        },{
-          name: 'F病历',
-          date: '2021-10-13',
-        },{
-          name: 'E病历',
-          date: '2021-10-01',
-        },{
-          name: 'H病历',
-          date: '2021-10-10',
-        },{
-          name: 'I病历',
-          date: '2021-10-16',
-        },{
-          name: 'J病历',
-          date: '2021-10-22',
+          id: '5',
+          name: '李华-绵阳市中医医院病历',
+          date: '2018-09-16',
         }],
         multipleSelection: [],
-        share: false,
+        share: true,
         searchContent: "",
         dialogVisible: false,
         dialogVisible1: false,
@@ -120,13 +110,16 @@ export default {
         this.$refs.multipleTable.clearSelection();
       }
     },
+
     handleSelectionChange(val) {
       this.multipleSelection = val;
     },
+
     check(row) {
       console.log(row);
       this.$router.push("/patientViewEmr");
     },
+
     remove() {
       console.log(this.removeId);
       this.$message({
@@ -135,11 +128,13 @@ export default {
       });
       this.dialogVisible1 = false;
     },
+
     search(val) {
       console.log(val);
     },
+
     send() {
-      this.selectOption = this.multipleSelection.map(v => v.name);
+      this.selectOption = this.multipleSelection.map(v => v.id);
       console.log(this.selectOption);
       if(this.selectOption.length == 0){
           this.$message({
@@ -148,15 +143,19 @@ export default {
         })
       }
       else {
-        this.$message({
-          type: "success",
-          message: "发送成功!"
-        })
+        let emrId = this.selectOption.map(v => v.id);
+        const newObj = {
+          patientId: 123,
+          hospitalId: 456,
+          emrId
+        }
+        console.log(newObj);
       }
       this.selectOption = [];
       this.dialogVisible = false;
     }
   },
+
   created() {
     this.clientHeight = document.body.clientHeight - 120 + "px";
     console.log(this.clientHeight);

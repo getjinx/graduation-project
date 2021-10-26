@@ -14,7 +14,7 @@
           <el-input v-model="form.address" placeholder="请输入地址"></el-input>
         </el-form-item>
         <el-form-item label="创建日期">
-          <el-input v-model="form.date"></el-input>
+          <el-input v-model="form.createDate"></el-input>
         </el-form-item>
         <el-form-item label="匿名算法">
           <el-input v-model="form.algorithm"></el-input>
@@ -50,20 +50,40 @@ export default {
         account: "",
         password: "",
         address: "",
-        date: "2021-10-20",
+        createDate: "2021-10-20",
         algorithm: "sha256",
         active: "参与共识"
       }
     };
   },
   methods: {
-    addNode() {
-      console.log(this.form);
-      this.$message({
-        type: "success",
-        message: "添加节点成功!"
-      });
-      this.$router.push("/manage/manageNode");
+    async addNode() {
+      if(!this.checkEmpty(this.form)){
+        await this.$http.post("/addBlockNode",this.form);
+        this.$message({
+          type: "success",
+          message: "添加节点成功!"
+        });
+        this.$router.push("/manage/manageNode");
+      }
+      else {
+        this.$message({
+          type: "warning",
+          message: "表单尚未填写完整!"
+        })
+      }
+    },
+    checkEmpty(item) {
+      function hasEmptyValue(obj) {
+        let hasEmpty = false;
+        for(let key in obj) {
+          if(obj[key].length == 0) {
+            hasEmpty = true;
+          }
+        }
+        return hasEmpty;
+      }
+      return Array.isArray(item) ? Array.length == 0 : hasEmptyValue(item); 
     }
   },
   computed: {},

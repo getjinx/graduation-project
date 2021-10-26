@@ -6,11 +6,11 @@
           </el-table-column>
           <el-table-column prop="account" label="账户" width="120">
           </el-table-column>
-          <el-table-column prop="password" label="密码" width="120">
+          <el-table-column prop="password" label="密码">
           </el-table-column>
-          <el-table-column prop="address" label="地址">
+          <el-table-column prop="address" label="地址" width="300">
           </el-table-column>
-          <el-table-column prop="date" label="创建日期" width="140">
+          <el-table-column prop="createDate" label="创建日期" width="140">
           </el-table-column>
           <el-table-column prop="algorithm" label="匿名算法" width="120">
           </el-table-column>
@@ -19,7 +19,7 @@
           <el-table-column fixed="right" label="操作" width="100">
             <template slot-scope="scope">
               <el-button @click="edit(scope.row)" type="text" size="small">编辑</el-button>
-              <el-button @click="remove(scope.row)" type="text" size="small">删除</el-button>
+              <el-button @click="showRemove(scope.row)" type="text" size="small">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -28,7 +28,7 @@
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page.sync="currentPage"
-      :page-sizes="[100, 200, 300, 400]"
+      :page-sizes="[10, 20, 50, 100]"
       :page-size="pageSize"
       layout="sizes, prev, pager, next"
       :total="total">
@@ -48,7 +48,7 @@
           <el-input v-model="form.address"></el-input>
         </el-form-item>
         <el-form-item label="创建日期">
-          <el-input v-model="form.date"></el-input>
+          <el-input v-model="form.createDate"></el-input>
         </el-form-item>
         <el-form-item label="匿名算法">
           <el-select v-model="form.algorithm">
@@ -66,9 +66,16 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="editNode">完成</el-button>
-          <el-button @click="dialogVisible = false">取消</el-button>
+          <el-button @click="dialogVisible = false;">取消</el-button>
         </el-form-item>
       </el-form>
+    </el-dialog>
+    <el-dialog title="提示" :visible.sync="dialogVisible1" width="30%">
+      <span>确认删除该节点？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible1 = false">取 消</el-button>
+        <el-button type="primary" @click="remove">确 定</el-button>
+      </span>
     </el-dialog>
   </div>
 </template>
@@ -96,30 +103,23 @@
 <script>
 export default {
   data() {
-    const item = {
-      name: "XXXXXX中心医院",
-      account: "abcdefg",
-      password: "123456",
-      address: "四川省绵阳市涪城区1234号",
-      date: "2021-10-20",
-      algorithm: "sha256",
-      active: "参与共识"
-    };
     return {
-      tableData: Array(20).fill(item),
+      tableData: [],
       dialogVisible: false,
+      dialogVisible1: false,
       form: {
         name: "",
         account: "",
         password: "",
         address: "",
-        date: "",
+        createDate: "",
         algorithm: "",
         active: ""
       },
       total: 1234,
-      pageSize: 100,
+      pageSize: 10,
       currentPage: 1,
+      removeId: 0,
     };
   },
   methods: {
@@ -128,13 +128,30 @@ export default {
       this.form = row;
     },
 
-    remove(row) {
-      console.log(row);
+    showRemove(row) {
+      this.removeId = row.id;
+      this.dialogVisible1 = true;
+      this.getData();
     },
 
-    editNode() {
-      console.log(123);
+    async remove() {
+      const res = await this.$http.delete("/blockNode", {
+        params: {
+          id: this.removeId
+        }
+      });
+      this.dialogVisible1 = false;
+      this.$message({
+        type: "success",
+        message: "删除成功!"
+      })
+      console.log(res.data);
+    },
+
+    async editNode() {
+      const res = await this.$http.put("/blockNode", this.form);
       this.dialogVisible = false;
+      console.log(res.data);
     },
 
     handleSizeChange(size) {
@@ -143,8 +160,25 @@ export default {
 
     handleCurrentChange(page) {
       this.currentPage = page;
+      this.getData();
+    },
+
+    async getData() {
+      const res = await this.$http.get("/blockNode",{
+        params: {
+          page: this.currentPage,
+          size: this.pageSize
+        }
+      });
+      this.tableData = res.data.data.rows;
+      this.total = res.data.data.count;
     }
   },
+
+  created() {
+    this.getData();  
+  },
+
   computed: {},
 };
 </script>

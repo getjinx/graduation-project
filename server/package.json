@@ -9,8 +9,9 @@
     "koa-bodyparser": "^4.3.0",
     "koa-router": "^10.1.1",
     "koa2-cors": "^2.0.6",
-    "mysql2": "^2.3.0",
     "multi-crypto-js": "^1.0.3",
+    "mysql2": "^2.3.0",
+    "nodejs-websocket": "^1.7.2",
     "sequelize": "^6.6.5"
   },
   "devDependencies": {},

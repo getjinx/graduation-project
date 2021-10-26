@@ -57,7 +57,7 @@ export default {
       },
       xAxis: {
         type: 'category',
-        data: ['医院A', '医院B', '医院C', '医院D', '医院E', '医院F', '医院G']
+        data: ['市中心医院', '中心医院', '市中医医院', '市中医医院', '市人民医院', '市中医医院', '市骨科医院']
       },
       yAxis: {
         type: 'value'

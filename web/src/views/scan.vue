@@ -73,7 +73,8 @@ export default {
   methods: {
     cancel() {
       this.$router.go(-1);
-    }
+    },
+
   }
 }
 </script>
