@@ -22,6 +22,7 @@ module.exports = sequelize => {
         hash: Sequelize.STRING, //区块hash
         merkleRoot: Sequelize.STRING,   //区块merkle根hash
     }, {
+    }, {
         timestamps: false
     })
     return Block;

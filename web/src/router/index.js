@@ -31,6 +31,10 @@ const routes = [
       path: 'getEmr',
       name: 'getEmr',
       component: () => import('../views/getEmr.vue')
+    },{
+      path: 'preview',
+      name: "preview",
+      component: () => import('../views/preview.vue')
     }]
   },
   {
@@ -86,6 +90,10 @@ const routes = [
     path: '/patientViewEmr',
     name: 'patientViewEmr',
     component: () => import('../views/patientViewEmr.vue')
+  },{
+    path: '*',
+    name: "notFound",
+    component: () => import('../views/notFound.vue')
   }
 ]
 

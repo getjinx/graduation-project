@@ -16,6 +16,8 @@
           </el-table-column>
           <el-table-column prop="active" label="状态" width="120">
           </el-table-column>
+          <el-table-column prop="netAddress" label="网络地址" width="120">
+          </el-table-column>
           <el-table-column fixed="right" label="操作" width="100">
             <template slot-scope="scope">
               <el-button @click="edit(scope.row)" type="text" size="small">编辑</el-button>
@@ -33,7 +35,7 @@
       layout="sizes, prev, pager, next"
       :total="total">
     </el-pagination>
-    <el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
+    <el-dialog title="编辑节点" :visible.sync="dialogVisible" width="30%">
       <el-form ref="form" :model="form" label-width="80px">
         <el-form-item label="名称">
           <el-input v-model="form.name"></el-input>
@@ -64,13 +66,16 @@
             <el-option label="暂时禁用" value="暂时禁用"></el-option>
           </el-select>
         </el-form-item>
+        <el-form-item label="网络地址">
+          <el-input v-model="form.netAddress"></el-input>
+        </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="editNode">完成</el-button>
           <el-button @click="dialogVisible = false;">取消</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
-    <el-dialog title="提示" :visible.sync="dialogVisible1" width="30%">
+    <el-dialog title="确认删除" :visible.sync="dialogVisible1" width="30%">
       <span>确认删除该节点？</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible1 = false">取 消</el-button>
@@ -114,7 +119,8 @@ export default {
         address: "",
         createDate: "",
         algorithm: "",
-        active: ""
+        active: "",
+        netAddress: "",
       },
       total: 1234,
       pageSize: 10,

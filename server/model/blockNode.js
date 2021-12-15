@@ -13,6 +13,7 @@ module.exports = sequelize => {
         address: Sequelize.STRING,  //医院地址
         createDate: Sequelize.STRING,   //节点加入日期
         active: Sequelize.STRING,   //节点状态：参与共识，参与投票，暂时弃用
+        netAddress: Sequelize.STRING,   //网络通信地址
     }, {
         timestamps: false
     })

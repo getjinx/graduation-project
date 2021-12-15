@@ -6,15 +6,15 @@
   "dependencies": {
     "hash.js": "^1.1.7",
     "koa": "^2.13.1",
+    "koa-body": "^4.2.0",
     "koa-bodyparser": "^4.3.0",
     "koa-router": "^10.1.1",
     "koa2-cors": "^2.0.6",
-    "multi-crypto-js": "^1.0.3",
+    "lrs": "^0.1.5",
     "mysql2": "^2.3.0",
-    "nodejs-websocket": "^1.7.2",
-    "sequelize": "^6.6.5"
+    "sequelize": "^6.6.5",
+    "ws": "^8.3.0"
   },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon index.js"

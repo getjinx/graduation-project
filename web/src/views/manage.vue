@@ -3,8 +3,8 @@
     <el-container style="height: 500px; border: 1px solid #eee">
       <el-header>
         <el-container>
-          <el-aside width="200px" style="font-size: 20px">电子病历共享系统</el-aside>
-          <el-container style="display:flex; flex-direction: row-reverse; padding-right: 40px;">
+          <el-aside width="200px" style="font-size: 20px">分布式电子病历隐私保护系统</el-aside>
+          <!-- <el-container style="display:flex; flex-direction: row-reverse; padding-right: 40px;">
             <span>XXXX中心医院</span>
             <el-dropdown>
               <i class="el-icon-setting" style="margin-right: 15px"></i>
@@ -14,7 +14,7 @@
                 <el-dropdown-item>删除</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
-          </el-container>
+          </el-container> -->
         </el-container>
       </el-header>
       <el-container>

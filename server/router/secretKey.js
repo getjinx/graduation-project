@@ -1,7 +1,7 @@
 module.exports = (app, sequelize) => {
     const router = require("koa-router")();
     app.use(router.routes()).use(router.allowedMethods());
-    const crypto = require("multi-crypto-js").Sm2Sm4;
+    const lrs = require("lrs");
     router.get("/secretKey", async ctx => {
         const Model = require("../model/secretKey.js")(sequelize);
         const data = await Model.findAll();
@@ -13,13 +13,11 @@ module.exports = (app, sequelize) => {
     });
     router.post("/secretKey", async ctx => {
         const Model = require("../model/secretKey.js")(sequelize);
-        const key = crypto.generateKeyPair();
+        const key = lrs.gen();
         await Model.create({
             userId: +ctx.request.body.id,
             publicKey: key.publicKey,
             privateKey: key.privateKey,
-            algorithm: key.algorithm,
-            format: key.format
         });
         const data = await Model.findAll();
         ctx.body = { 
