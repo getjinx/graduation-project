@@ -39,13 +39,14 @@
 export default {
   data() {
     return {
-      drag: false,
       url: "",
       allowUpload: false,
       uploadData: {
         uploader: 0,
         owner: 0,
+        name: "",
       },
+      name: ""
     }
   },
 
@@ -53,6 +54,7 @@ export default {
     upload(e,file) {
       console.log(file);
       console.log(e);
+      this.uploadData.name = file.name;
     },
 
     preview() {
@@ -64,18 +66,18 @@ export default {
     async download() {
       const res = await this.$http.get("/getFile");
       console.log(res.data); 
-      // let blob = new Blob([res.data], {
-      //   type: "application/pdf"
-      // });
-      // let url = window.URL.createObjectURL(blob);
-      // let ele = document.createElement("a");
-      // ele.style.display = "none";
-      // ele.href = url;
-      // this.url = res.data;
-      // ele.download = "测试下载";
-      // document.querySelectorAll("body")[0].appendChild(ele);
-      // ele.click();
-      // ele.remove();
+      let blob = new Blob([res.data], {
+        type: "application/pdf"
+      });
+      let url = window.URL.createObjectURL(blob);
+      let ele = document.createElement("a");
+      ele.style.display = "none";
+      ele.href = url;
+      this.url = res.data;
+      ele.download = "测试下载";
+      document.querySelectorAll("body")[0].appendChild(ele);
+      ele.click();
+      ele.remove();
     },
 
     checkType(file) {

@@ -1,5 +1,4 @@
-module.exports = (app, sequelize) => {
-    const router = require("koa-router")();
+module.exports = (app, router, sequelize) => {
     app.use(router.routes()).use(router.allowedMethods());
     router.get("/block", async ctx => {
         const Model = require("../model/block.js")(sequelize);

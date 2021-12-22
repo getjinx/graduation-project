@@ -1,8 +1,7 @@
-module.exports = (app, sequelize) => {
-    const router = require("koa-router")();
+module.exports = (app, router, sequelize) => {
     app.use(router.routes()).use(router.allowedMethods());
+    const Model = require("../model/transaction.js")(sequelize);
     router.get("/transaction", async ctx => {
-        const Model = require("../model/transaction.js")(sequelize);
         const data = await Model.findAll();
         ctx.body = {
             success: true,
@@ -12,7 +11,6 @@ module.exports = (app, sequelize) => {
     });
 
     router.post("/transaction", async ctx => {
-        const Model = require("../model/transaction.js")(sequelize);
         const {initiator, receiverPublicKey, timestamp, information} = ctx.request.body;
         const Key = require("../model/secretKey.js")(sequelize);
         const initiatorPublicKey = initiator;

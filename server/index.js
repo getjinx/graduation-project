@@ -7,6 +7,8 @@ const cors = require("koa2-cors");
 app.use(cors());
 const path = require('path');
 const koaBody = require('koa-body');
+const router = require('koa-router')();
+global.fileList = [];
 const sequelize = new Sequelize("graduation_project", "root", "123456", {
     host: "localhost",
     pool: {
@@ -18,19 +20,19 @@ const sequelize = new Sequelize("graduation_project", "root", "123456", {
 }); 
 app.use(koaBody({
   multipart: true, // 支持文件上传
-  encoding:'gzip',
+  // encoding:'gzip',
   formidable:{
     uploadDir: path.join(__dirname,'upload/'), // 设置文件上传目录
     keepExtensions: true,    // 保持文件的后缀
     maxFieldsSize: 5 * 1024 * 1024, // 文件上传大小
-    onFileBegin:async (fileName,file) => { // 文件上传前的设置
-      const {name, size, uid} = file;
-      const Model = require("./model/fileList.js")(sequelize);
-      await Model.create({})
+    onFileBegin:async (name, file) => { // 文件上传前的设置
+      const dirName = new Date().getTime();
+      file.path = path.join(__dirname,'upload/') + dirName + '.pdf';
+      global.fileList.push(dirName + '.pdf');
     }
   }
 }));
 require("./alliance_chain/environmental.js")(sequelize);
-require("./router/index")(app, sequelize); 
+require("./router/index")(app, router, sequelize);
 console.log("http://localhost:3000");
 app.listen("3000");
