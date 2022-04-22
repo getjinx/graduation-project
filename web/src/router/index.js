@@ -20,10 +20,6 @@ const routes = [
     name: 'index',
     component: () => import('../views/index.vue'),
     children: [{
-      path: 'checkemr',
-      name: 'checkEmr',
-      component: () => import('../views/checkEmr.vue')
-    },{
       path: 'uploademr',
       name: 'uploadEmr',
       component: () => import('../views/uploadEmr.vue')

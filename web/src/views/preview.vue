@@ -18,10 +18,8 @@ export default {
         };
     },
     created() {
-      console.log(this.$route.params);
-      this.previewUrl = this.$route.params.url;
+      this.previewUrl = "http://localhost:3000/getFile";
       this._loadFile(this.previewUrl);
-      console.log(this.previewUrl);
     },
     mounted() {
       this.viewportX = document.querySelector(".canvas-container").clientWidth;

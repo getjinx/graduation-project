@@ -16,9 +16,9 @@ module.exports = (app, router, sequelize) => {
             const passwordHash = hash.sha256().update(password).digest('hex');
             if(passwordHash == data[0].password) {
                 ctx.body = {
+                    userId: data[0].id,
                     success: true,
                     message: "登录成功",
-                    name: data.name
                 }
             }
             else {
@@ -42,9 +42,11 @@ module.exports = (app, router, sequelize) => {
         else {
             const passwordHash = hash.sha256().update(password).digest('hex');
             await Model.create({account, password: passwordHash, name: ""});
+            const user = await Model.findAll({ where: {account}});
             ctx.body = {
                 success: true,
-                message: "注册成功"
+                message: "注册成功",
+                userId: user[0].id,
             }
         }
     });

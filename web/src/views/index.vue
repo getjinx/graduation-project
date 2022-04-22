@@ -5,7 +5,7 @@
         <el-container>
           <el-aside width="200px" style="font-size: 20px">电子病历共享系统</el-aside>
           <el-container style="display:flex; flex-direction: row-reverse; padding-right: 40px;">
-            <span>XXXX中心医院</span>
+            <span>{{ hospitalName }}</span>
             <el-dropdown>
               <i class="el-icon-setting" style="margin-right: 15px"></i>
               <el-dropdown-menu slot="dropdown">
@@ -71,13 +71,8 @@
 <script>
 export default {
   data() {
-    const item = {
-      date: "2016-05-02",
-      name: "王小虎",
-      address: "上海市普陀区金沙江路 1518 弄",
-    };
     return {
-      tableData: Array(20).fill(item),
+      hospitalName: "绵阳市中心医院",
     };
   },
   methods: {

@@ -18,7 +18,7 @@
         <el-table-column fixed="right" label="操作" width="100">
           <template slot-scope="scope">
             <el-button @click="check(scope.row)" type="text" size="small">查看</el-button>
-            <el-button @click="dialogVisible1 = true; removeId = scope.row.name;" type="text" size="small">删除</el-button>
+            <!-- <el-button @click="dialogVisible1 = true; removeId = scope.row.name;" type="text" size="small">删除</el-button> -->
           </template>
         </el-table-column>
       </el-table>
@@ -29,12 +29,12 @@
       <el-button type="primary" @click="send">确 定</el-button>
       </span>
     </el-dialog>
-    <el-dialog title="提示" :visible.sync="dialogVisible1" width="60%">
+    <!-- <el-dialog title="提示" :visible.sync="dialogVisible1" width="60%">
       <span>删除后你无法与其他医院(医生)再次分享该病历，确认删除？</span>
       <span slot="footer" class="dialog-footer"> <el-button @click="dialogVisible1 = false">取 消</el-button>
       <el-button type="primary" @click="remove">确 定</el-button>
       </span>
-    </el-dialog>
+    </el-dialog> -->
   </div>
 </template>
 <style lang="scss" scoped>
@@ -66,30 +66,11 @@
 }
 </style>
 <script>
+import * as dayjs from 'dayjs'
 export default {
   data() {
     return {
-        tableData: [{
-          id: '1',
-          name: '李华-绵阳市中心医院病历',
-          date: '2021-10-12',
-        }, {
-          id: '2',
-          name: '李华-绵阳市人民医院病历',
-          date: '2021-10-9',
-        },{
-          id: '3',
-          name: '李华-绵阳市中心医院病历',
-          date: '2021-06-21',
-        },{
-          id: '4',
-          name: '李华-绵阳市人民医院病历',
-          date: '2020-01-16',
-        },{
-          id: '5',
-          name: '李华-绵阳市中医医院病历',
-          date: '2018-09-16',
-        }],
+        tableData: [],
         multipleSelection: [],
         share: true,
         searchContent: "",
@@ -98,6 +79,7 @@ export default {
         selectOption: [],
         removeId: 0,
         clientHeight: "0",
+        userId: 0,
     };
   },
   methods: {
@@ -116,8 +98,12 @@ export default {
     },
 
     check(row) {
-      console.log(row);
-      this.$router.push("/patientViewEmr");
+      this.$router.push({
+        name: "patientViewEmr",
+        params: {
+          id: row.id
+        }
+      });
     },
 
     remove() {
@@ -133,7 +119,7 @@ export default {
       console.log(val);
     },
 
-    send() {
+    async send() {
       this.selectOption = this.multipleSelection.map(v => v.id);
       console.log(this.selectOption);
       if(this.selectOption.length == 0){
@@ -143,22 +129,51 @@ export default {
         })
       }
       else {
-        let emrId = this.selectOption.map(v => v.id);
+        let emrId = this.selectOption;
         const newObj = {
-          patientId: 123,
-          hospitalId: 456,
+          owner: 123,
           emrId
         }
         console.log(newObj);
+        const res = await this.$http.post("/sendFile", newObj);
+        if(res.data.success) {
+          this.$alert(`分享成功,获取码为${res.data.data},两分钟有效！`, '分享成功', {
+            confirmButtonText: '确定',
+          });
+        }
+        else {
+          this.$message({
+            type: "error",
+            message: "分享失败，请稍后重试"
+          })
+        }
       }
       this.selectOption = [];
       this.dialogVisible = false;
+    },
+
+    async getData() {
+      const res = await this.$http.get("/getFileList", {
+        params: {
+          userId: this.userId
+        }
+      });
+      console.log(this.tableData);
+      this.tableData = res.data.data.map(v => {
+        return {
+          name: v.name,
+          date: dayjs(+v.saveTime).format("YYYY-MM-DD"),
+          id: v.id
+        }
+      });
     }
   },
 
   created() {
+    this.userId = localStorage.userId;
     this.clientHeight = document.body.clientHeight - 120 + "px";
     console.log(this.clientHeight);
+    this.getData();
   }
 };
 </script>

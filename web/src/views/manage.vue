@@ -3,7 +3,7 @@
     <el-container style="height: 500px; border: 1px solid #eee">
       <el-header>
         <el-container>
-          <el-aside width="200px" style="font-size: 20px">分布式电子病历隐私保护系统</el-aside>
+          <el-aside width="300px" style="font-size: 20px">电子病历共享系统</el-aside>
           <!-- <el-container style="display:flex; flex-direction: row-reverse; padding-right: 40px;">
             <span>XXXX中心医院</span>
             <el-dropdown>

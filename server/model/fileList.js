@@ -10,6 +10,7 @@ module.exports = sequelize => {
         owner: Sequelize.INTEGER,
         name: Sequelize.STRING,
         saveName: Sequelize.STRING,
+        saveTime: Sequelize.STRING
     }, {
         timestamps: false
     })

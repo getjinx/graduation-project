@@ -29,7 +29,11 @@ address.forEach(item => {
 });
 
 function wait() {
-    for(let i = 0; i < 1000; i++) {
+    for(let i = 0; i < 4000; i++) {
+        let a = 2;
+        if(a == 2) {
+            
+        }
     }
 }
 
@@ -77,7 +81,7 @@ function submit(information) {
 function reply(information) {
     passCount++;
     wait();
-    // console.log(passCount, passNumber);
+    console.log(information);
     if(passCount > passNumber && !replyPass) {
         const message = "ok";
         const replySocket = new WebSocket(information.address);
@@ -89,6 +93,6 @@ function reply(information) {
     }
 }
 
-function veryfy(publicKeyArray, ringSignature, message) {
+function verify(publicKeyArray, ringSignature, message) {
     return lrs.verify(publicKeyArray, ringSignature, message);
 }

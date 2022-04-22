@@ -6,9 +6,8 @@
         drag
         action="http://localhost:3000/uploadEmr"
         :data="uploadData"
-        multiple
-        :on-progress="upload"
-        :before-upload="checkType"
+        multiple  
+        :before-upload="check"
       >
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
@@ -17,8 +16,6 @@
         </div>
       </el-upload>
     </div>
-    <el-button @click="download">下载</el-button>
-    <el-button @click="preview">预览</el-button>
   </div>
 </template>
 
@@ -36,10 +33,11 @@
 </style>
 
 <script>
+// import { create } from 'ipfs-http-client'
 export default {
   data() {
     return {
-      url: "",
+      url: "/1649662777642.pdf",
       allowUpload: false,
       uploadData: {
         uploader: 0,
@@ -50,39 +48,23 @@ export default {
     }
   },
 
+  async created() {
+    this.uploadData.owner = localStorage.userId;
+    this.uploadData.uploader = localStorage.hospitalId;
+    // connect to a different API
+    //const client = create("http://127.0.0.1:5001")
+
+    // call Core API methods
+    //const { cid } = await client.add('Hello world!')
+
+    //console.log(cid);
+  },
+
   methods: {
-    upload(e,file) {
-      console.log(file);
-      console.log(e);
-      this.uploadData.name = file.name;
-    },
-
-    preview() {
-      this.$router.push({name : "preview", params: {
-        url: this.url
-      }});
-    },
-
-    async download() {
-      const res = await this.$http.get("/getFile");
-      console.log(res.data); 
-      let blob = new Blob([res.data], {
-        type: "application/pdf"
-      });
-      let url = window.URL.createObjectURL(blob);
-      let ele = document.createElement("a");
-      ele.style.display = "none";
-      ele.href = url;
-      this.url = res.data;
-      ele.download = "测试下载";
-      document.querySelectorAll("body")[0].appendChild(ele);
-      ele.click();
-      ele.remove();
-    },
-
-    checkType(file) {
+    check(file) {
       const typeArray = file.name.split(".");
       if(typeArray[typeArray.length - 1] == "pdf") {
+        this.uploadData.name = typeArray[0];
         this.allowUpload = true;
       }
       else {
@@ -91,6 +73,17 @@ export default {
           type: "error",
           message: "只能选择pdf文件"
         })
+        return this.allowUpload;
+      }
+      if(this.uploadData.owner == 0) {
+        this.$message({
+          type: "error",
+          message: "请先获取病人身份信息!"
+        });
+        this.allowUpload = false;
+      }
+      else {
+        this.allowUpload = true;
       }
       return this.allowUpload;
     }

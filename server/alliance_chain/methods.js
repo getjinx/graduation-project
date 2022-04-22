@@ -9,7 +9,6 @@ wss = new WebSocketServer({ port: serverPort });
 wss.on('connection', function (ws) {
     ws.on('message', function (message) {
         receiveCount++;
-        console.log(message + "");
         if(receiveCount >= allCount / 3 + 1) {
             endTime = new Date().getTime();
             console.log(endTime - startTime);
@@ -89,6 +88,7 @@ async function consensus(sequelize) {  //共识
     sendSocket.on('open', () => {
         sendSocket.send(JSON.stringify(message));
     });
+    
 }
 
 async function generateRingSignature(publicKey, privateKey, message, sequelize) {  //生成环签名
@@ -111,7 +111,6 @@ async function generateRingSignature(publicKey, privateKey, message, sequelize) 
             ringNumber++;
         }
     }
-    console.log(publicKeyArray);
     const ringSignature = lrs.sign(publicKeyArray, userKey, message);
     return ringSignature;
 }

@@ -19,7 +19,8 @@
         </div>
       </div>
       <div class="login">
-        <el-button type="primary" class="login" round @click="operate">{{ isLogin ? "登录" : "注册登录"}}</el-button>
+        <el-button type="primary" class="button" round @click="operate">{{ isLogin ? "登录" : "注册登录"}}</el-button>
+        <el-button type="primary" class="button" round @click="isLogin = !isLogin">{{ isLogin ? "注册" : "返回登录"}}</el-button>
       </div>
     </div>
   </div>
@@ -71,11 +72,17 @@
       }
 
       .login {
-        width: 100px;
+        width: 200px;
+        display: flex;
         margin: 0 auto;
-        margin-top: 10px;
+        margin-top: 20px;
         text-align: center;
+
+        .button {
+          justify-content: space-between;
+        }
       }
+      
     }
   }
 </style>
@@ -91,6 +98,13 @@ export default {
   },
   methods: {
     async login() {
+      if(this.account.length == 0 || this.password.length == 0) {
+        this.$message({
+          type: "error",
+          message: "账号或者密码不能为空!"
+        });
+        return ;
+      }
       const userInfo = {
         account: this.account,
         password: this.password
@@ -101,16 +115,24 @@ export default {
           type: "success",
           message: "登录成功"
         });
-        this.$router.push("/index");
+        localStorage.userId = res.data.userId;
+        this.$router.push("/patientIndex");
       }
       else {
         this.$message({
           type: "error",
-          message: "账号或密码错误"
+          message: res.data.message
         })
       }
     },
     async register() {
+      if(this.account.length == 0 || this.password.length == 0 || this.confirmPassword == 0) {
+        this.$message({
+          type: "error",
+          message: "账号或者密码不能为空!"
+        });
+        return ;
+      }
       if(this.password != this.confirmPassword) {
         this.$message({
           type: "error",
@@ -129,7 +151,14 @@ export default {
             type: "success",
             message: "注册成功"
           });
-          this.$router.push("/index");
+          localStorage.userId = res.data.userId;
+          this.$router.push("/patientIndex");
+        }
+        else {
+          this.$message({
+            type: "error",
+            message: res.data.message
+          })
         }
       }
     },

@@ -31,7 +31,11 @@ function connect() {
 }
 
 function wait() {
-    for(let i = 0; i < 1000; i++) {
+    for(let i = 0; i < 4000; i++) {
+        let a = 2;
+        if(a == 2) {
+            
+        }
     }
 }
 

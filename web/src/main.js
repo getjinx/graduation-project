@@ -6,6 +6,7 @@ import store from './store'
 import axios from 'axios'
 import "./assets/css/reset.css"
 
+
 Vue.config.productionTip = false
 Vue.prototype.$http = axios.create({
   baseURL: "http://localhost:3000"

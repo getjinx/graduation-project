@@ -16,12 +16,12 @@
         <el-form-item label="创建日期">
           <el-input v-model="form.createDate"></el-input>
         </el-form-item>
-        <el-form-item label="匿名算法">
+        <!-- <el-form-item label="匿名算法">
           <el-input v-model="form.algorithm"></el-input>
         </el-form-item>
         <el-form-item label="网络地址">
           <el-input v-model="form.netAddress"></el-input>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="状态">
           <el-select v-model="form.active">
             <el-option label="参与共识" value="参与共识"></el-option>

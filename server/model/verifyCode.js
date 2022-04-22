@@ -1,16 +1,17 @@
 const Sequelize = require("sequelize");
 module.exports = sequelize => {
-    const User = sequelize.define('user', {
+    const VerifyCode = sequelize.define('verifycode', {
         id: {
             type: Sequelize.INTEGER,
             primaryKey: true,
             autoIncrement: true,
         },
-        account: Sequelize.STRING, //病人账号
-        password: Sequelize.STRING, //病人密码hash
-        name: Sequelize.STRING  //病人姓名
+        owner: Sequelize.INTEGER,
+        fileId: Sequelize.INTEGER,
+        code: Sequelize.STRING,
+        generateTime: Sequelize.STRING,
     }, {
         timestamps: false
     })
-    return User;
+    return VerifyCode;
 };

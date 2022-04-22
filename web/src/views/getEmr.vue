@@ -2,8 +2,10 @@
   <div class="home">
     <el-dialog title="提示" :visible.sync="dialogVisible" width="400px" class="qrcodeFrame">
       <div class="qrcode" v-if="!hasAuthority">
-        <div class="hint">请患者扫描二维码获取病历数据</div>
-        <div class="picture"></div>
+        <div class="hint">获取病历
+          <el-input placeholder="请输入病历获取码，获取病历！" v-model="code"></el-input>
+        </div>
+        <el-button class="getInfo" type="primary" @click="getFile">确定</el-button>
       </div>
       <span slot="footer" class="dialog-footer"></span>
     </el-dialog>
@@ -15,11 +17,12 @@
         <el-table :data="tableData">
           <el-table-column prop="name" label="名称">
           </el-table-column>
-          <el-table-column prop="date" label="创建日期">
+          <el-table-column prop="saveTime" label="创建日期">
           </el-table-column>
           <el-table-column fixed="right" label="操作" width="100">
             <template slot-scope="scope">
               <el-button @click="check(scope.row)" type="text" size="small">查看</el-button>
+              <el-button @click="download(scope.row)" type="text" size="small">下载</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -37,26 +40,19 @@
 
     .qrcode {
     width: 300px;
-    height: 300px;
+    height: 100px;
     margin: auto;
-    background: rgb(64, 158, 255);
+    // background: rgb(64, 158, 255);
 
       .hint {
-        text-align: center;
-        height: 50px;
-        line-height: 50px;
+        text-align: left;
         font-size: 18px;
         color: black;
       }
 
-      .picture {
-        width: 200px;
-        height: 200px;
+      .getInfo {
         position: relative;
-        top: 20px;
-        left: 50px;
-        background: url("../assets/image/qrcode.png") no-repeat 0 0;
-        background-size: 100% 100%;
+        top: 10px;
       }
     }
   }
@@ -76,54 +72,89 @@
 </style>
 
 <script>
+import * as dayjs from 'dayjs'
 export default {
   data() {
     return {
       hasAuthority: false,
       dialogVisible: false,
-      tableData: [{
-        id: '1',
-        name: '李华-绵阳市中心医院病历',
-        date: '2021-10-12',
-      }, {
-        id: '2',
-        name: '李华-绵阳市人民医院病历',
-        date: '2021-10-9',
-      },{
-        id: '3',
-        name: '李华-绵阳市中心医院病历',
-        date: '2021-06-21',
-      },{
-        id: '4',
-        name: '李华-绵阳市人民医院病历',
-        date: '2020-01-16',
-      },{
-        id: '5',
-        name: '李华-绵阳市中医医院病历',
-        date: '2018-09-16',
-      }]
+      hospitalId: 10,
+      userId: 1,
+      tableData: [],
+      code: "",
     };
   },
 
   methods: {
     check(row) {
       localStorage.emrId = row.id;
-      this.$router.push("/index/checkEmr");
+        this.$router.push({name : "preview", params: {
+          url: row.saveName
+      }});
     },
 
     getEmr() {
       this.dialogVisible = true;
-      this.getData();
     },
 
-    getData() {
-      console.log(123);
+    async getFile() {
+      let data = [];
+      const res = await this.$http.get("getFileId", {
+        params: {
+          code: this.code
+        }
+      });
+      data = res.data.data.map(v => {
+        return {
+          id: v.id,
+          name: v.name,
+          saveTime: dayjs(+v.saveTime).format("YYYY-MM-DD"),
+          saveName: v.saveName,
+          owner: v.owner
+        }
+      });
+      this.tableData = data;
+      sessionStorage.tableData = JSON.stringify(data);
+      localStorage.userId = data[0].owner;
+      this.dialogVisible = false;
+    },
+
+    async download(row) {
+      const res = await this.$http.get("/getFile", {
+        params: {
+          name: "",
+        },
+        responseType: 'arraybuffer'
+      });
+      let blob = new Blob([res.data], {
+        type: "application/pdf"
+      });
+      let url = window.URL.createObjectURL(blob);
+      let ele = document.createElement("a");
+      ele.style.display = "none";
+      ele.href = url;
+      this.url = res.data;
+      ele.download = row.name;
+      document.querySelectorAll("body")[0].appendChild(ele);
+      ele.click();
+      ele.remove();
+    },
+
+    preview(row) {
+      this.$router.push({name : "preview", params: {
+        url: row.saveName
+      }});
     }
   },
 
   created() {
-    this.dialogVisible = true;
-    this.getData();
+    if(!sessionStorage.tableData) {
+      this.dialogVisible = true;
+    }
+    else {
+      this.tableData = JSON.parse(sessionStorage.tableData);
+    }
+    this.hospitalId = localStorage.hospitalId;
   }
 };
 </script>
